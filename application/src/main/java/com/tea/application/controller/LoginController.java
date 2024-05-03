@@ -34,11 +34,13 @@ public class LoginController {
     @PostMapping("/handleSubmit")
     public String submitUser(User user, Model model){
         User validateUsername = userService.getUserByUsername(user.getUsername());
+        System.out.println(user.getPassword());
+        System.out.println(validateUsername.getPassword());
         if(validateUsername==null){
             model.addAttribute("errorMessage", "Username does not exist");
             return "login";
         }
-        else if(validateUsername.getPassword().equals(user.getPassword())){
+        else if(userService.authenticate(user.getPassword(), validateUsername.getPassword())){
             return "redirect:/registration";
             
         }
