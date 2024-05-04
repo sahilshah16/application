@@ -12,7 +12,7 @@
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" th:field="*{password}" required>
     <br>
-    <span th:if="${errorMessage == 'Username already exists'}" th:text="${errorMessage}">Username already exists</span>
+    <span style="color:red" th:if="${errorMessage == 'Username already exists'}" >Email username already exists</span>
     <br>
     <button type="submit">Register</button>
   </form>

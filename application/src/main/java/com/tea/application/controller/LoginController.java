@@ -31,7 +31,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/handleSubmit")
+    @PostMapping("/handleLogin")
     public String submitUser(User user, Model model){
         User validateUsername = userService.getUserByUsername(user.getUsername());
         if(validateUsername==null){
@@ -39,7 +39,8 @@ public class LoginController {
             return "login";
         }
         else if(userService.authenticate(user.getPassword(), validateUsername.getPassword())){
-            return "redirect:/registration";
+            model.addAttribute("success", "true");
+            return "registration";
             
         }
 
@@ -54,9 +55,11 @@ public class LoginController {
     public String addNewUser(User user, Model model){
         User validateUsername = userService.getUserByUsername(user.getUsername());
         if(validateUsername==null){
+            System.out.println("here!!!!!!!!");
             userService.saveUser(user);
             model.addAttribute("user", user);
-            return "redirect:/login";
+            model.addAttribute("success", "true");
+            return "login";
         }
         else{
             model.addAttribute("errorMessage", "Username already exists");
