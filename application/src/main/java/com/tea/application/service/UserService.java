@@ -1,5 +1,7 @@
 package com.tea.application.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,10 @@ public class UserService {
 
     public User getUserByUsername(String username){
         return userRepository.findByUsername(username);
+    }
+
+    public Optional<User> getUserById(String id){
+        return userRepository.findById(id);
     }
 
     public User saveUser(User user){
