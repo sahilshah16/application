@@ -61,10 +61,22 @@
 
 <div class="search-container">
     <h1>Item Search</h1>
-    <form>
-        <input type="text" placeholder="Search items" name="search">
+    <form th:action="@{/search}" method="get">
+        <input type="text" placeholder="Search items" name="searchTerm">
         <button type="submit">Search</button>
     </form>
+</div>
+
+<div class="search-results">
+    <h2>Search Results</h2>
+    <div th:if="${not #sets.isEmpty(searchResults)}"> <!-- Check if search results are not empty -->
+        <ul>
+            <li th:each="item : ${searchResults}" class="item">
+                <span th:text="${item.name}"></span> <!-- Display item name -->
+            </li>
+        </ul>
+    </div>
+    <p th:if="${#sets.isEmpty(searchResults)}">No results found.</p> <!-- Display message if no results found -->
 </div>
 
 </body>
