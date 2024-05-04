@@ -1,7 +1,5 @@
 package com.tea.application.entity;
 
-import java.time.LocalDateTime;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,18 +10,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@Document(collection = "users")
-public class User {
+@Document(collection = "items")
+public class Item {
     @Id
     private String id;
 
-    private String username;
+    private String name; 
 
-    private String password;
+    private String supplier;
 
-    private LocalDateTime date;
+    private String typeName;
+
+    private int amountInGrams;
+
+    private double itemPriceGBP;
     
-    public User() {
-        this.date = LocalDateTime.now();
-    }
 }
