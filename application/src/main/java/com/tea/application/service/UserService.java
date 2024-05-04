@@ -26,6 +26,6 @@ public class UserService {
     } 
 
     public boolean authenticate(String password, String hashedPassword){
-        return passwordEncoderService.hashPassword(password).equals(hashedPassword);
+        return passwordEncoderService.checkPassword(password, hashedPassword);
     }
 }

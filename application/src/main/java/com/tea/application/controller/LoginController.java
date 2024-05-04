@@ -34,8 +34,6 @@ public class LoginController {
     @PostMapping("/handleSubmit")
     public String submitUser(User user, Model model){
         User validateUsername = userService.getUserByUsername(user.getUsername());
-        System.out.println(user.getPassword());
-        System.out.println(validateUsername.getPassword());
         if(validateUsername==null){
             model.addAttribute("errorMessage", "Username does not exist");
             return "login";
@@ -44,6 +42,7 @@ public class LoginController {
             return "redirect:/registration";
             
         }
+
         else{
             model.addAttribute("errorMessage", "Invalid password");
             return "login";
