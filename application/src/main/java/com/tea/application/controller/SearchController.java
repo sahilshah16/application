@@ -43,17 +43,22 @@ public class SearchController {
     @GetMapping("/home")
     public String getHome(Model model){
 
-        if (isAuthenticated()) {
+        HttpSession session = request.getSession(false);
 
-            String userId = getUserIdFromSession();
-            model.addAttribute("userId", userId);
+        if (session != null && session.getAttribute("authenticated") != null && (boolean) session.getAttribute("authenticated")) {
+            
+            if (session.getAttribute("userId") != null) {
+       
+                String userId= (String) session.getAttribute("userId");
 
-            return "home"; 
-        } else {
+                model.addAttribute("userId", userId);
 
-            return "redirect:/login";
+                return "home"; 
+            } 
 
-        }
+        } 
+
+        return "redirect:/login";
     }
 
     @GetMapping("/signOut")
@@ -64,27 +69,8 @@ public class SearchController {
         if (session != null) {
             session.invalidate(); 
         }
-        
+
         return "redirect:/login"; 
     }
 
-    private boolean isAuthenticated() {
-        
-        HttpSession session = request.getSession(false);
-
-        return session != null && session.getAttribute("authenticated") != null && (boolean) session.getAttribute("authenticated");
-    }
-    
-    private String getUserIdFromSession() {
-       
-        HttpSession session = request.getSession(false); 
-  
-        if (session != null && session.getAttribute("userId") != null) {
-       
-            return (String) session.getAttribute("userId");
-        } else {
-
-            return null;
-        }
-    }
 }
