@@ -47,6 +47,10 @@ public class SearchController {
 
         model.addAttribute("searchResults", itemService.searchArray(words));
 
+        model.addAttribute("afterSearch", true);
+
+        System.out.println(model.getAttribute("afterSearch"));
+
         return "home";
     }
 
@@ -62,6 +66,8 @@ public class SearchController {
                 String userId= (String) session.getAttribute("userId");
 
                 model.addAttribute("userId", userId);
+
+                model.addAttribute("afterSearch", false);
 
                 return "home"; 
             } 

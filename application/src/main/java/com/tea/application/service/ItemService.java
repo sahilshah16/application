@@ -2,6 +2,7 @@ package com.tea.application.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,10 @@ public class ItemService {
 
     @Autowired
     ItemRepository itemRepository;
+
+    public Optional<Item> searchById(String id){
+        return itemRepository.findById(id);
+    }
 
     public HashSet<Item> searchItemsResult(String searchTerm){
         System.out.println("Here");

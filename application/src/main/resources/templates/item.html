@@ -47,6 +47,9 @@
         .search-container button:hover {
             background-color: #45a049;
         }
+        .inline-heading {
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -56,28 +59,32 @@
     <a href="/basket">Basket</a>
     <a href="/signOut">Sign Out</a>
     <p>User ID: <span th:text="${userId}"></span></p>
-        
 </div>
 
-<div class="search-container">
-    <h1>Item Search</h1>
-    <form th:action="@{/search}" method="get">
-        <input type="text" placeholder="Search items" name="searchTerm">
-        <button type="submit">Search</button>
-    </form>
-</div>
-
-<div class="search-results">
-    <h2>Search Results</h2>
-    <div th:if="${not #sets.isEmpty(searchResults)}"> <!-- Check if search results are not empty -->
-        <ul>
-            <li th:each="item : ${searchResults}" class="item">
-                <a th:href="@{'/item/' + ${item.id}}" th:text="${item.name}"></a> <!-- Display item name -->
-            </li>
-        </ul>
+<div class="search-container" th:if="${noItem}!=true">
+    <h1 th:text="${item.name}"></h1>
+    <div>
+        <h3 class="inline-heading">Supplier: </h3>
+        <h3 th:text="${item.supplier}" class="inline-heading"></h3>
     </div>
-    <p th:if="${#sets.isEmpty(searchResults) and afterSearch == true}">No results found.</p> <!-- Display message if no results found -->
+    <div>
+        <h3 class="inline-heading">Type: </h3>
+        <h3 th:text="${item.typeName}" class="inline-heading"></h3>
+    </div>
+    <div>
+        <h3 class="inline-heading">Amount In Grams: </h3>
+        <h3 th:text="${item.amountInGrams}" class="inline-heading"></h3>
+    </div>
+    <div>
+        <h3 class="inline-heading">Price: </h3>
+        <h3 th:text="${item.itemPriceGBP}" class="inline-heading"></h3>
+    </div>
 </div>
+
+<div class="search-container" th:if="${noItem}==true">
+    <h1>No Item Found</h1>
+</div>
+
 
 </body>
 </html>
