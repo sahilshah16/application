@@ -62,7 +62,7 @@ public class SearchController {
         if (session != null && session.getAttribute("authenticated") != null && (boolean) session.getAttribute("authenticated")) {
             
             if (session.getAttribute("userId") != null) {
-       
+    
                 String userId= (String) session.getAttribute("userId");
 
                 model.addAttribute("userId", userId);

@@ -58,6 +58,9 @@
     <p>User ID: <span th:text="${userId}"></span></p>
         
 </div>
+<div th:if="${basket == true}"class="navbar" style="background-color: green">
+    <p>Successfully added to basket!</p>
+</div>
 
 <div class="search-container">
     <h1>Item Search</h1>

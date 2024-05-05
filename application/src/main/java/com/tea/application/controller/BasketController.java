@@ -40,7 +40,7 @@ public class BasketController {
     public String addToBasket(@PathVariable String itemId,@RequestParam(required = false) Integer quantity, Model model){
         
         HttpSession session = request.getSession(false);
-            
+        
         String userId= (String) session.getAttribute("userId");
         if(basketService.getBasketByUser(userId)==null){
             Basket basket = new Basket();
@@ -72,7 +72,10 @@ public class BasketController {
             basketService.saveBasket(basket);
         }
         model.addAttribute("basket", true);
-        return "registration";
+        model.addAttribute("userId", userId);
+
+        
+        return "home";
     } 
         
         
