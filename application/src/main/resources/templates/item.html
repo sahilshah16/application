@@ -50,6 +50,35 @@
         .inline-heading {
             display: inline-block;
         }
+        .counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .counter-button {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #ccc;
+            margin: 0 5px;
+        }
+
+        .add-to-basket {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -79,11 +108,19 @@
         <h3 class="inline-heading">Price: </h3>
         <h3 th:text="${item.itemPriceGBP}" class="inline-heading"></h3>
     </div>
+    <form th:action="@{'/addToBasket/' + ${item.id} + '?quantity=2'}" method="get">
+        <div class="counter">
+            <input type="number" class="quantity-input" name="quantity" value="1" min="1"> 
+            <button type="submit" class="add-to-basket">Add to Basket</button>
+        </div>
+    </form>
 </div>
 
 <div class="search-container" th:if="${noItem}==true">
     <h1>No Item Found</h1>
 </div>
+
+
 
 
 </body>
