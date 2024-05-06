@@ -77,7 +77,30 @@ public class BasketController {
         
         return "home";
     } 
-        
+    
+    @GetMapping("/basket/{userId}")
+    public String getBasket(@PathVariable String userId, Model model){
+        Basket basket = basketService.getBasketByUser(userId);
+        if(basket==null){
+            model.addAttribute("emptyBasket", true);
+            return "basket";
+        }
+        else{
+            System.out.println(basket.getBasketDatas().get(0).getItem().toString());
+            model.addAttribute("userId", userId);
+            model.addAttribute("basketData", basket.getBasketDatas());
+            List<Double> prices = new ArrayList<>();
+            double total =0.0;
+            for(BasketData data: basket.getBasketDatas()){
+                double quantityWithPrice = data.getQuantity()*data.getItem().getItemPriceGBP();
+                total+=quantityWithPrice;
+                prices.add(quantityWithPrice);
+            }
+            model.addAttribute("prices", prices);
+            model.addAttribute("total", total);
+            return "basket";
+        }
+    }
         
 }
 

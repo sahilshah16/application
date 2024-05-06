@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .navbar a:last-child {
+            margin-right: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .info {
+            flex: 1;
+            position: relative; /* Takes up remaining space */
+        }
+
+        .price {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/home">Home</a>
+    <a th:href="@{'/basket/' + {userId}}">Basket</a>
+    <a href="/signOut">Sign Out</a>
+    <p>User ID: <span th:text="${userId}"></span></p>
+</div>
+
+<div class="search-results" th:if="${emptyBasket != true}">
+    <h2 style="text-align: center;">Basket Items</h2>
+        <ul th:each="b,iterStat : ${basketData}">
+            
+            <div class="container">
+                <div class="info">
+                
+                    <h3 th:text="${b.item.name}"></h3>
+                    <div>
+                        <span class="inline-heading">Supplier: </span>
+                        <span th:text="${b.item.supplier}"></span>
+                    </div>
+                    <div>
+                        <span class="inline-heading">Type: </span>
+                        <span th:text="${b.item.typeName}" class="inline-heading"></span>
+                    </div>
+                    <div>
+                        <span class="inline-heading">Amount In Grams: </span>
+                        <span th:text="${b.item.amountInGrams}" class="inline-heading"></span>
+                    </div>
+                    <div>
+                        <span class="inline-heading">Price per item: </span>
+                        <span th:text="${b.item.itemPriceGBP}" class="inline-heading"></pspan>
+                    </div>
+                    <div>
+                        <span class="inline-heading">Quantity: </span>
+                        <span th:text="${b.quantity}" class="inline-heading"></span>
+                    </div>
+                    <div class="price">
+                        <span style="font-weight:bold;">Price: </span>
+                        <span style="font-weight:bold;" th:text="${prices[iterStat.index]}"></span>
+                    </div>
+                </div>
+
+            </div>
+        
+        </ul>
+</div>
+
+</body>
+</html>

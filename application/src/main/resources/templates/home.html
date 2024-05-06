@@ -53,7 +53,7 @@
 
 <div class="navbar">
     <a href="/home">Home</a>
-    <a href="/basket">Basket</a>
+    <a th:href="@{'/basket/' + ${userId}}">Basket</a>
     <a href="/signOut">Sign Out</a>
     <p>User ID: <span th:text="${userId}"></span></p>
         
@@ -70,7 +70,7 @@
     </form>
 </div>
 
-<div class="search-results">
+<div class="search-results" th:if="${afterSearch == true}">
     <h2>Search Results</h2>
     <div th:if="${not #sets.isEmpty(searchResults)}"> <!-- Check if search results are not empty -->
         <ul>
@@ -79,7 +79,7 @@
             </li>
         </ul>
     </div>
-    <p th:if="${#sets.isEmpty(searchResults) and afterSearch == true}">No results found.</p> <!-- Display message if no results found -->
+    <p th:if="${#sets.isEmpty(searchResults)}">No results found.</p> <!-- Display message if no results found -->
 </div>
 
 </body>
