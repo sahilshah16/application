@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import com.tea.application.service.BasketService;
 import com.tea.application.service.ItemService;
 import com.tea.application.service.UserService;
 
@@ -23,6 +23,9 @@ public class SearchController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    BasketService basketService;
 
     @Autowired
     private HttpServletRequest request;
@@ -82,10 +85,17 @@ public class SearchController {
         
         HttpSession session = request.getSession(false); 
 
+        String userId= (String) session.getAttribute("userId");
+
+        if(basketService.getBasketByUser(userId)!=null){
+            
+            basketService.deleteBasketByUser(userId);
+        }
+
         if (session != null) {
             session.invalidate(); 
         }
-
+        
         return "redirect:/login"; 
     }
 

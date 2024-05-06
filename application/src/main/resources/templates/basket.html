@@ -119,6 +119,10 @@
     <h3 style="text-align: center; display: inline;">Total Amount: </h3>
     <h3 th:text="${total}" style="text-align: center; display: inline;"></h3>
 </div>
-
+<div class="search-container">
+    <form th:action="@{'/handleOrder/' + ${userId}}" method="post">
+        <button type="submit">Order And Make Payment</button>
+    </form>
+</div>
 </body>
 </html>

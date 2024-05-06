@@ -20,4 +20,9 @@ public class BasketService {
         basketRepository.save(basket);
     }
     
+    public void deleteBasketByUser(String userId){
+        basketRepository.deleteByUserId(userId);
+    }
+    
+    
 }

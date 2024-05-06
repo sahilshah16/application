@@ -14,8 +14,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "baskets")
-public class Basket {
+@Document(collection = "orders")
+public class Order {
 
     @Id
     private String id;
