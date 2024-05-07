@@ -26,6 +26,8 @@ public class Order {
     
     private double shippingCost;
 
+    private double itemCost;
+
     private LocalDateTime date;
 
     public Order() {

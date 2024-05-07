@@ -20,12 +20,14 @@ public class OrderController {
     @Autowired
     BasketService basketService;
 
-    @PostMapping("/handleOrder/{userId}")
-    public String handleOrder(@PathVariable String userId, Model model){
+    @PostMapping("/handleOrder/{userId}/{shipping}/{total}")
+    public String handleOrder(@PathVariable String userId,@PathVariable Double shipping,@PathVariable Double total, Model model){
         Basket basket = basketService.getBasketByUser(userId);
         Order order= new Order();
         order.setUserId(userId);
         order.setBasketDatas(basket.getBasketDatas());
+        order.setShippingCost(shipping);
+        order.setItemCost(total);
         orderService.saveOrder(order);
         basketService.deleteBasketByUser(userId);
         model.addAttribute("order", true);
