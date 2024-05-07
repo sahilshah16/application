@@ -26,4 +26,15 @@ public class User {
     public User() {
         this.date = LocalDateTime.now();
     }
+    public User(String username, String password){
+        this.date = LocalDateTime.now();
+        this.username=username;
+        this.password=password;
+    }
+    public User(String id, String username, String password){
+        this.date = LocalDateTime.now();
+        this.id=id;
+        this.username=username;
+        this.password=password;
+    }
 }

@@ -39,33 +39,43 @@ public class BasketController {
         HttpSession session = request.getSession(false);
         
         String userId= (String) session.getAttribute("userId");
+
         if(basketService.getBasketByUser(userId)==null){
+
             Basket basket = new Basket();
             basket.setUserId(userId);
+
             List<BasketData> basketDatas = new ArrayList<>();
             BasketData basketData = new BasketData();
             basketData.setQuantity(quantity);
+
             Optional<Item> itemOptional = itemService.searchById(itemId);
             if (itemOptional.isPresent()) {
                 Item item = itemOptional.get();
                 basketData.setItem(item);
             }
+
             basketDatas.add(basketData);
             basket.setBasketDatas(basketDatas);
             basketService.saveBasket(basket);
         }
         else{
+
             Basket basket = basketService.getBasketByUser(userId);
+
             BasketData basketData = new BasketData();
             basketData.setQuantity(quantity);
+
             Optional<Item> itemOptional = itemService.searchById(itemId);
             if (itemOptional.isPresent()) {
                 Item item = itemOptional.get();
                 basketData.setItem(item);
             }
+
             List<BasketData> basketDatas=basket.getBasketDatas();
             basketDatas.add(basketData);
             basket.setBasketDatas(basketDatas);
+
             basketService.saveBasket(basket);
         }
         model.addAttribute("basket", true);
@@ -77,36 +87,56 @@ public class BasketController {
     
     @GetMapping("/basket/{userId}")
     public String getBasket(@PathVariable String userId, Model model){
+
         Basket basket = basketService.getBasketByUser(userId);
+
         if(basket==null){
             model.addAttribute("emptyBasket", true);
             return "basket";
         }
+
         else{
             model.addAttribute("userId", userId);
             model.addAttribute("basketData", basket.getBasketDatas());
+
             List<Double> prices = new ArrayList<>();
+
             double price_total =0.0;
             double weight =0.0;
+            
             for(BasketData data: basket.getBasketDatas()){
                 double quantityWithPrice = data.getQuantity()*data.getItem().getItemPriceGBP();
+
                 double quantityWithWeight = data.getQuantity()*data.getItem().getAmountInGrams();
+
                 price_total+=quantityWithPrice;
+
                 weight+=quantityWithWeight;
+
                 prices.add(quantityWithPrice);
             }
+
             double shipping_weight=0.00;
+
             if(price_total>100){
+
                 shipping_weight=0.00;
+
             }
             else if(weight<6000){
+
                 shipping_weight=1.50;
+
             }
             else if(weight>=6000 && weight<=10000){
+
                 shipping_weight=10.00;
+
             }
             else if(weight>=10000){
+
                 shipping_weight=15.00;
+
             }
             model.addAttribute("shipping", shipping_weight);
             model.addAttribute("prices", prices);
