@@ -75,7 +75,10 @@ public class LoginController {
     public String addNewUser(User user, Model model){
 
         User validateUsername = userService.getUserByUsername(user.getUsername());
-
+        if(user.getPassword().length()<=5){
+            model.addAttribute("errorMessage", "Password Must Be At Least 6 Characters");
+            return "registration";
+        }
         if(validateUsername==null){
 
             userService.saveUser(user);

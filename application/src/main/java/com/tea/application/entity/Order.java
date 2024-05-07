@@ -1,5 +1,6 @@
 package com.tea.application.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -13,7 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Document(collection = "orders")
 public class Order {
 
@@ -23,5 +23,14 @@ public class Order {
     private String userId;
 
     private List<BasketData> basketDatas;
+    
+    private double shippingCost;
+
+    private LocalDateTime date;
+
+    public Order() {
+        this.date = LocalDateTime.now();
+    }
+
     
 }

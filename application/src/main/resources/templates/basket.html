@@ -116,8 +116,19 @@
         </ul>
 
 <div style="text-align: center;">
-    <h3 style="text-align: center; display: inline;">Total Amount: </h3>
+    <h3 style="text-align: center; display: inline;">Total Item Price Amount: </h3>
     <h3 th:text="${total}" style="text-align: center; display: inline;"></h3>
+</div>
+<div style="text-align: center;">
+    <h3 style="text-align: center; display: inline;">Total Shipping Price Amount: </h3>
+    <h3 th:if="${shipping == 0.0}" style="text-align: center; display: inline;">Free Shipping</h3>
+    <h3 th:if="${shipping == 1.5}" style="text-align: center; display: inline;">1.50</h3>
+    <h3 th:if="${shipping == 10.0}" style="text-align: center; display: inline;">10.00</h3>
+    <h3 th:if="${shipping == 15.0}" style="text-align: center; display: inline;">15.00</h3>
+</div>
+<div style="text-align: center;">
+    <h3 style="text-align: center; display: inline;">Total Amount: </h3>
+    <h3 th:text="${totalAmount}" style="text-align: center; display: inline;"></h3>
 </div>
 <div class="search-container">
     <form th:action="@{'/handleOrder/' + ${userId}}" method="post">

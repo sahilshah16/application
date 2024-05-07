@@ -83,18 +83,35 @@ public class BasketController {
             return "basket";
         }
         else{
-            System.out.println(basket.getBasketDatas().get(0).getItem().toString());
             model.addAttribute("userId", userId);
             model.addAttribute("basketData", basket.getBasketDatas());
             List<Double> prices = new ArrayList<>();
-            double total =0.0;
+            double price_total =0.0;
+            double weight =0.0;
             for(BasketData data: basket.getBasketDatas()){
                 double quantityWithPrice = data.getQuantity()*data.getItem().getItemPriceGBP();
-                total+=quantityWithPrice;
+                double quantityWithWeight = data.getQuantity()*data.getItem().getAmountInGrams();
+                price_total+=quantityWithPrice;
+                weight+=quantityWithWeight;
                 prices.add(quantityWithPrice);
             }
+            double shipping_weight=0.00;
+            if(price_total>100){
+                shipping_weight=0.00;
+            }
+            else if(weight<6000){
+                shipping_weight=1.50;
+            }
+            else if(weight>=6000 && weight<=10000){
+                shipping_weight=10.00;
+            }
+            else if(weight>=10000){
+                shipping_weight=15.00;
+            }
+            model.addAttribute("shipping", shipping_weight);
             model.addAttribute("prices", prices);
-            model.addAttribute("total", total);
+            model.addAttribute("total", price_total);
+            model.addAttribute("totalAmount", shipping_weight+price_total);
             return "basket";
         }
     }
