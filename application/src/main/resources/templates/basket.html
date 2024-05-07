@@ -114,7 +114,7 @@
             </div>
         
         </ul>
-</div>
+
 <div style="text-align: center;">
     <h3 style="text-align: center; display: inline;">Total Amount: </h3>
     <h3 th:text="${total}" style="text-align: center; display: inline;"></h3>
@@ -124,5 +124,10 @@
         <button type="submit">Order And Make Payment</button>
     </form>
 </div>
+</div>
+<div th:if="${emptyBasket == true}">
+    <h3 style="text-align: center;">Basket Is Empty</h3>
+</div>
+
 </body>
 </html>

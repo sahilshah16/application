@@ -28,6 +28,7 @@ public class OrderController {
         order.setBasketDatas(basket.getBasketDatas());
         orderService.saveOrder(order);
         basketService.deleteBasketByUser(userId);
+        model.addAttribute("order", true);
         return "home";
     }
 }
