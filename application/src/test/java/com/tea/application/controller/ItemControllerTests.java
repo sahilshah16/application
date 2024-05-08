@@ -36,20 +36,26 @@ public class ItemControllerTests {
     public void testGetItemInfo_AuthenticatedUser_ItemExists_ReturnsItemPage() {
         
         HttpSession session = mock(HttpSession.class);
+
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("authenticated")).thenReturn(true);
         when(session.getAttribute("userId")).thenReturn("123");
 
         String itemId = "itemId";
         Item item = new Item();
+
         when(itemService.searchById(itemId)).thenReturn(Optional.of(item));
 
         String viewName = itemController.getItemInfo(itemId, model);
 
         assertEquals("item", viewName);
+
         verify(model).addAttribute("userId", "123");
+
         verify(model).addAttribute("item", item);
+
         assertNull(model.getAttribute("noItem"));
+
         verify(itemService).searchById(itemId);
     }
 
@@ -57,19 +63,25 @@ public class ItemControllerTests {
     public void testGetItemInfo_AuthenticatedUser_ItemNotExists_ReturnsItemPageWithNoItemAttribute() {
        
         HttpSession session = mock(HttpSession.class);
+
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("authenticated")).thenReturn(true);
         when(session.getAttribute("userId")).thenReturn("123");
 
         String itemId = "nonExistingItemId";
+
         when(itemService.searchById(itemId)).thenReturn(Optional.empty());
 
         String viewName = itemController.getItemInfo(itemId, model);
 
         assertEquals("item", viewName);
+
         verify(model).addAttribute("userId", "123");
+
         assertNull(model.getAttribute("item"));
+
         verify(model).addAttribute("noItem", true);
+
         verify(itemService).searchById(itemId);
     }
 
@@ -77,6 +89,7 @@ public class ItemControllerTests {
     public void testGetItemInfo_UnauthenticatedUser_ReturnsItemPageWithNoUserAttribute() {
        
         HttpSession session = mock(HttpSession.class);
+        
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("authenticated")).thenReturn(false);
 

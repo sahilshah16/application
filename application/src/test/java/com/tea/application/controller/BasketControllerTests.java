@@ -45,7 +45,7 @@ public class BasketControllerTests {
 
     @Test
     public void testAddToBasket_BasketNotExist_CreateNewBasketAndAddItem() {
-        // Arrange
+        
         String userId = "userId";
         String itemId = "itemId";
         Integer quantity = 2;
@@ -55,26 +55,29 @@ public class BasketControllerTests {
         when(basketService.getBasketByUser(userId)).thenReturn(null);
 
         Item item = new Item();
+
         when(itemService.searchById(itemId)).thenReturn(Optional.of(item));
 
-        // Act
         String viewName = basketController.addToBasket(itemId, quantity, model);
 
-        // Assert
         assertEquals("home", viewName);
+
         verify(basketService).saveBasket(any(Basket.class));
+
         verify(model).addAttribute("basket", true);
+
         verify(model).addAttribute("userId", userId);
     }
 
     @Test
     public void testAddToBasket_BasketExist_AddItemToExistingBasket() {
-        // Arrange
+        
         String userId = "userId";
         String itemId = "itemId";
         Integer quantity = 2;
 
         when(request.getSession(false)).thenReturn(session);
+
         when(request.getSession(false).getAttribute("userId")).thenReturn(userId);
 
         Basket basket = new Basket();
@@ -83,19 +86,20 @@ public class BasketControllerTests {
         Item item = new Item();
         when(itemService.searchById(itemId)).thenReturn(Optional.of(item));
 
-        // Act
         String viewName = basketController.addToBasket(itemId, quantity, model);
 
-        // Assert
         assertEquals("home", viewName);
+
         verify(basketService).saveBasket(basket);
+
         verify(model).addAttribute("basket", true);
+
         verify(model).addAttribute("userId", userId);
     }
 
     @Test
     public void testAddToBasket_ItemNotFound_ReturnsHomeWithoutAddingToBasket() {
-        // Arrange
+        
         String userId = "userId";
         String itemId = "nonExistingItemId";
         Integer quantity = 2;
@@ -105,93 +109,94 @@ public class BasketControllerTests {
 
         when(itemService.searchById(itemId)).thenReturn(Optional.empty());
 
-        // Act
         String viewName = basketController.addToBasket(itemId, quantity, model);
 
-        // Assert
         assertEquals("home", viewName);
         verify(model).addAttribute("userId", userId);
     }
 
     @Test
     public void testGetBasket_EmptyBasket_ReturnsBasketPageWithEmptyBasketAttribute() {
-        // Arrange
+       
         String userId = "userId";
 
         when(basketService.getBasketByUser(userId)).thenReturn(null);
 
-        // Act
         String viewName = basketController.getBasket(userId, model);
 
-        // Assert
         assertEquals("basket", viewName);
+
         verify(model).addAttribute("emptyBasket", true);
     }
 
     @Test
     public void testGetBasket_NonEmptyBasket_ReturnsBasketPageWithAttributes() {
-        // Arrange
+        
         String userId = "userId";
+
         Basket basket = new Basket();
+
         BasketData basketData = new BasketData();
-        basketData.setQuantity(2); // Example quantity
-        basketData.setItem(new Item()); // Example item
-        basket.setBasketDatas(Collections.singletonList(basketData)); // Example basket data
+
+        basketData.setQuantity(2); 
+        basketData.setItem(new Item()); 
+        basket.setBasketDatas(Collections.singletonList(basketData)); 
+
         when(basketService.getBasketByUser(userId)).thenReturn(basket);
 
-        // Act
         String viewName = basketController.getBasket(userId, model);
 
-        // Assert
         assertEquals("basket", viewName);
         verify(model).addAttribute("userId", userId);
         verify(model).addAttribute("basketData", basket.getBasketDatas());
-        // Add more verifications for other attributes as needed
+     
     }
 
     @Test
     public void testGetBasket_ShippingWeightLessThan6000_ReturnsBasketPageWithShipping150() {
-        // Arrange
+        
         String userId = "userId";
+
         Basket basket = new Basket();
-        // Add BasketData with quantity and item to ensure shipping calculation
+
         BasketData basketData = new BasketData();
-        basketData.setQuantity(2); // Example quantity
-        basketData.setItem(new Item()); // Example item
-        basket.setBasketDatas(Collections.singletonList(basketData)); // Example basket data
+
+        basketData.setQuantity(2); 
+        basketData.setItem(new Item()); 
+
+        basket.setBasketDatas(Collections.singletonList(basketData)); 
         when(basketService.getBasketByUser(userId)).thenReturn(basket);
 
-        // Act
         String viewName = basketController.getBasket(userId, model);
 
-        // Assert
         assertEquals("basket", viewName);
         verify(model).addAttribute("userId", userId);
         verify(model).addAttribute("basketData", basket.getBasketDatas());
         verify(model).addAttribute("shipping", 1.50);
-        // Add more verifications for other attributes as needed
+        
     }
 
     @Test
     public void testGetBasket_ShippingWeightBetween6000And10000_ReturnsBasketPageWithShipping1000() {
-        // Arrange
+        
         String userId = "userId";
+
         Basket basket = new Basket();
-        // Add BasketData with quantity and item to ensure shipping calculation
+
         BasketData basketData = new BasketData();
-        basketData.setQuantity(5); // Example quantity
-        basketData.setItem(new Item()); // Example item
-        basket.setBasketDatas(Collections.singletonList(basketData)); // Example basket data
+
+        basketData.setQuantity(5); 
+        basketData.setItem(new Item()); 
+        
+        basket.setBasketDatas(Collections.singletonList(basketData)); 
         when(basketService.getBasketByUser(userId)).thenReturn(basket);
 
-        // Act
         String viewName = basketController.getBasket(userId, model);
 
-        // Assert
         assertEquals("basket", viewName);
         verify(model).addAttribute("userId", userId);
         verify(model).addAttribute("basketData", basket.getBasketDatas());
-        // Add more verifications for other attributes as needed
+        
     }
 
     
