@@ -16,6 +16,10 @@ public class ItemService {
     @Autowired
     ItemRepository itemRepository;
 
+    public Item saveItem(Item item){
+        return itemRepository.save(item);
+    }
+
     public Optional<Item> searchById(String id){
         return itemRepository.findById(id);
     }
