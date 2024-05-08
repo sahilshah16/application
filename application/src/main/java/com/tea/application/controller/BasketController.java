@@ -33,57 +33,37 @@ public class BasketController {
     @Autowired
     ItemService itemService;
 
+    
+        
     @PostMapping("/addToBasket/{itemId}")
-    public String addToBasket(@PathVariable String itemId,@RequestParam(required = false) Integer quantity, Model model){
-        
+    public String addToBasket(@PathVariable String itemId, @RequestParam(required = false) Integer quantity, Model model) {
         HttpSession session = request.getSession(false);
-        
-        String userId= (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("userId");
 
-        if(basketService.getBasketByUser(userId)==null){
-
-            Basket basket = new Basket();
+        Basket basket = basketService.getBasketByUser(userId);
+        if (basket == null) {
+            basket = new Basket();
             basket.setUserId(userId);
-
-            List<BasketData> basketDatas = new ArrayList<>();
-            BasketData basketData = new BasketData();
-            basketData.setQuantity(quantity);
-
-            Optional<Item> itemOptional = itemService.searchById(itemId);
-            if (itemOptional.isPresent()) {
-                Item item = itemOptional.get();
-                basketData.setItem(item);
-            }
-
-            basketDatas.add(basketData);
-            basket.setBasketDatas(basketDatas);
-            basketService.saveBasket(basket);
         }
-        else{
 
-            Basket basket = basketService.getBasketByUser(userId);
+        BasketData basketData = new BasketData();
+        basketData.setQuantity(quantity);
 
-            BasketData basketData = new BasketData();
-            basketData.setQuantity(quantity);
+        Optional<Item> itemOptional = itemService.searchById(itemId);
+        itemOptional.ifPresent(item -> basketData.setItem(item));
 
-            Optional<Item> itemOptional = itemService.searchById(itemId);
-            if (itemOptional.isPresent()) {
-                Item item = itemOptional.get();
-                basketData.setItem(item);
-            }
-
-            List<BasketData> basketDatas=basket.getBasketDatas();
-            basketDatas.add(basketData);
-            basket.setBasketDatas(basketDatas);
-
-            basketService.saveBasket(basket);
+        if (basket.getBasketDatas() == null) {
+            basket.setBasketDatas(new ArrayList<>());
         }
+        basket.getBasketDatas().add(basketData);
+
+        basketService.saveBasket(basket);
+
         model.addAttribute("basket", true);
         model.addAttribute("userId", userId);
 
-        
         return "home";
-    } 
+    }
     
     @GetMapping("/basket/{userId}")
     public String getBasket(@PathVariable String userId, Model model){
