@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.opencsv.CSVWriter;
 import com.tea.application.entity.Order;
+import com.tea.application.entity.User;
 import com.tea.application.service.OrderService;
+import com.tea.application.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +30,9 @@ public class ReportController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private HttpServletRequest request;
@@ -57,7 +62,7 @@ public class ReportController {
            model.addAttribute("errorMessage", "Start Date Must Be Before End Date");
 
         }
-        if(startDateOrder.isAfter(LocalDate.now())|| startDateOrder.isAfter(LocalDate.now())){
+        if(startDateOrder.isAfter(LocalDate.now())|| endDateOrder.isAfter(LocalDate.now())){
 
             model.addAttribute("errorMessage", "Dates Must Be Not Be In The Future");
 
@@ -90,6 +95,56 @@ public class ReportController {
         }
 
         String filename = "orders_" + startDateOrder+"_"+endDateOrder+ ".csv";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentDisposition(ContentDisposition.attachment()
+            .filename(filename)
+            .build());
+        headers.setContentType(MediaType.TEXT_PLAIN);
+
+        return new ResponseEntity<>(csvWriter.toString(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/reports/users")
+    public ResponseEntity<String> generateUserReport(@RequestParam LocalDate startDateUser, @RequestParam LocalDate endDateUser, Model model) throws IOException {
+
+        if(startDateUser.isAfter(endDateUser)){
+
+           model.addAttribute("errorMessage", "Start Date Must Be Before End Date");
+
+        }
+        if(startDateUser.isAfter(LocalDate.now())|| endDateUser.isAfter(LocalDate.now())){
+
+            model.addAttribute("errorMessage", "Dates Must Be Not Be In The Future");
+
+        }
+
+        List<User> users = userService.getOrdersWithinDateRange(startDateUser, endDateUser);
+
+
+        StringWriter csvWriter = new StringWriter();
+
+        CSVWriter writer = new CSVWriter(csvWriter);
+
+        try{
+
+            writer.writeNext(new String[]{"User ID", "Username Email", "Registration Date"}); 
+
+            for (User user : users) {
+
+                writer.writeNext(new String[]{user.getId(), user.getUsername(), user.getDate().toString()});
+
+            }
+            
+        }
+        finally{
+
+            writer.close();
+
+        }
+
+        String filename = "users_" + startDateUser+"_"+endDateUser+ ".csv";
 
         HttpHeaders headers = new HttpHeaders();
 

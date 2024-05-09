@@ -116,8 +116,8 @@
 <body>
 
 <div class="navbar">
-    <a href="">Home</a>
-    <a th:href="@{/reports}">Reports</a>
+    <a href="/adminHome">Home</a>
+    <a href="">Reports</a>
     <a href="/signOutAdmin">Sign Out</a>
     <p>Admin ID: <span th:text="${adminId}"></span></p>
         
@@ -142,29 +142,31 @@
             <span class="error-message" th:if="${errorMessage == 'Start Date Must Be Before End Date'}" style="color: red;">Start Date Must Be Before End Date</span>
             <span class="error-message" th:if="${errorMessage == 'Dates Must Be Not Be In The Future'}"style="color: red;">Dates Cannot Be In The Future</span>
             <div class="form-group">
-                <button type="submit">Create Order Report</button>
+                <button type="submit">Download Order Report</button>
             </div>
         </form>
             
             
     </div>
-</div>
 
-<div class="section">
-    <h2>User Report</h2>
-    <form th:action="@{/createUserReport}" method="post">
-        <div class="form-group">
-            <label for="start-date-user">Start Date:</label>
-            <input type="date" id="startDateUser" name="startDateUser" required>
-        </div>
-        <div class="form-group">
-            <label for="end-date-user">End Date:</label>
-            <input type="date" id="endDateUser" name="endDateUser" required>
-        </div>
-        <div class="form-group">
-            <button type="submit">Create User Report</button>
-        </div>
-    </form>
+
+    <div class="section">
+        <h2>User Report</h2>
+        <form th:action="@{/reports/users}" method="get">
+            <div class="form-group">
+                <label for="start-date-user">Start Date:</label>
+                <input type="date" id="startDateUser" name="startDateUser" required>
+            </div>
+            <div class="form-group">
+                <label for="end-date-user">End Date:</label>
+                <input type="date" id="endDateUser" name="endDateUser" required>
+            </div>
+            <input type="hidden" name="csvContent" id="csvContentInput">
+            <div class="form-group">
+                <button type="submit">Download User Report</button>
+            </div>
+        </form>
+    </div>
 </div>
 <script th:inline="javascript">
     /* Add Javascript to handle form submission */

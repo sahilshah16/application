@@ -76,4 +76,20 @@ public class AdminLoginController {
         
         return "adminLogin"; 
     }
+
+    @GetMapping("/adminHome")
+    public String adminHome(Model model){
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("authenticated") != null && (boolean) session.getAttribute("authenticated")) {
+            
+            if (session.getAttribute("adminId") != null) {
+       
+                String adminId= (String) session.getAttribute("adminId");
+
+                model.addAttribute("adminId", adminId);
+            }
+        }
+        model.addAttribute("item", new Item());
+        return "adminHome";
+    }
 }

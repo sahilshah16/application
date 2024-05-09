@@ -1,5 +1,7 @@
 package com.tea.application.service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +36,9 @@ public class UserService {
     public boolean authenticate(String password, String hashedPassword){
         return passwordEncoderService.checkPassword(password, hashedPassword);
     }
+
+    public List<User> getOrdersWithinDateRange(LocalDate startDate, LocalDate endDate) {
+        return userRepository.findByDateBetween(startDate, endDate);
+    }
+
 }
