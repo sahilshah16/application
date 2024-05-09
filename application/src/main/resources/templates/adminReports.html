@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order and User Report</title>
+    <style>
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+
+        span.error-message {
+            color: red;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        span.success-message {
+            color: green;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .section {
+            width: 45%;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+        .form-group input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .navbar a:last-child {
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="">Home</a>
+    <a th:href="@{/reports}">Reports</a>
+    <a href="/signOutAdmin">Sign Out</a>
+    <p>Admin ID: <span th:text="${adminId}"></span></p>
+        
+</div>
+
+<div>
+    <h1 style="text-align: center;">Order and User Reports</h1>
+</div>
+<div class="container">
+    <div class="section">
+        <h2>Order Report</h2>
+        <form th:action="@{/reports/orders}" method="get">
+            <div class="form-group">
+                <label for="start-date-order">Start Date:</label>
+                <input type="date" id="startDateOrder" name="startDateOrder" required>
+            </div>
+            <div class="form-group">
+                <label for="end-date-order">End Date:</label>
+                <input type="date" id="endDateOrder" name="endDateOrder" required>
+            </div>
+            <input type="hidden" name="csvContent" id="csvContentInput">
+            <span class="error-message" th:if="${errorMessage == 'Start Date Must Be Before End Date'}" style="color: red;">Start Date Must Be Before End Date</span>
+            <span class="error-message" th:if="${errorMessage == 'Dates Must Be Not Be In The Future'}"style="color: red;">Dates Cannot Be In The Future</span>
+            <div class="form-group">
+                <button type="submit">Create Order Report</button>
+            </div>
+        </form>
+            
+            
+    </div>
+</div>
+
+<div class="section">
+    <h2>User Report</h2>
+    <form th:action="@{/createUserReport}" method="post">
+        <div class="form-group">
+            <label for="start-date-user">Start Date:</label>
+            <input type="date" id="startDateUser" name="startDateUser" required>
+        </div>
+        <div class="form-group">
+            <label for="end-date-user">End Date:</label>
+            <input type="date" id="endDateUser" name="endDateUser" required>
+        </div>
+        <div class="form-group">
+            <button type="submit">Create User Report</button>
+        </div>
+    </form>
+</div>
+<script th:inline="javascript">
+    /* Add Javascript to handle form submission */
+    var form = document.getElementById("reportForm");
+    form.addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", this.action, true);
+      xhr.responseType = "text";
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          document.getElementById("csvContentInput").value = xhr.responseText;
+          form.submit(); // Submit form again to trigger download
+        }
+      };
+      xhr.send();
+    });
+  </script>
+</body>
+</html>

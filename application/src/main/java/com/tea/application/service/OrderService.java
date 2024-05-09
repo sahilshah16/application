@@ -1,5 +1,8 @@
 package com.tea.application.service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +23,9 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    
+    public List<Order> getOrdersWithinDateRange(LocalDate startDate, LocalDate endDate) {
+        return orderRepository.findByDateBetween(startDate, endDate);
+    }
+
+
 }
