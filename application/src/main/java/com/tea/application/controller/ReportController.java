@@ -3,7 +3,9 @@ package com.tea.application.controller;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.opencsv.CSVWriter;
+import com.tea.application.entity.BasketData;
+import com.tea.application.entity.Item;
 import com.tea.application.entity.Order;
 import com.tea.application.entity.User;
 import com.tea.application.service.OrderService;
@@ -70,6 +74,17 @@ public class ReportController {
 
         List<Order> orders = orderService.getOrdersWithinDateRange(startDateOrder, endDateOrder);
 
+        HashMap<Item, Integer> itemInformationMap = new HashMap<>();
+        for(Order order: orders){
+            for(BasketData basketData: order.getBasketDatas()){
+                if(!itemInformationMap.containsKey(basketData.getItem())){
+                    itemInformationMap.put(basketData.getItem(), basketData.getQuantity());
+                }
+                else{
+                    itemInformationMap.put(basketData.getItem(), itemInformationMap.get(basketData.getItem())+basketData.getQuantity());
+                }
+            }
+        }
 
         StringWriter csvWriter = new StringWriter();
 
@@ -77,13 +92,15 @@ public class ReportController {
 
         try{
 
-            writer.writeNext(new String[]{"Order ID", "Customer ID", "Total Price Item", "Shipping Cost", "Total Amount", "Date Orderd"}); 
+            writer.writeNext(new String[]{"Name of Item", "Supplier", "Number Of Items Sold", "Individual Item Price", "Total Amount Sold"}); 
 
-            for (Order order : orders) {
+            for (Map.Entry<Item, Integer> entry : itemInformationMap.entrySet()){
 
-                String total = Double.toString(order.getItemCost()+order.getShippingCost());
+                Item item = entry.getKey();
+                Integer quantity = entry.getValue();
+                Double totalAmount= item.getItemPriceGBP()*quantity;
 
-                writer.writeNext(new String[]{order.getId(), order.getUserId(), Double.toString(order.getItemCost()),Double.toString(order.getShippingCost()), total, order.getDate().toString() });
+                writer.writeNext(new String[]{item.getName(), item.getSupplier(), String.valueOf(quantity),Double.toString(item.getItemPriceGBP()), Double.toString(totalAmount)});
 
             }
             
