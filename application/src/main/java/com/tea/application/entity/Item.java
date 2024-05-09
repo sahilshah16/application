@@ -42,5 +42,13 @@ public class Item {
     @NotNull(message = "Price of Item (GBP) cannot be empty")
     @DecimalMin(value = "0.01", message = "Price of Item (GBP) must be greater than or equal to 0.01")
     private double itemPriceGBP;
+
+    public Item(String name, String supplier, String typeName, int amountInGrams, double itemPriceGBP){
+        this.name=name;
+        this.supplier=supplier;
+        this.typeName=typeName;
+        this.amountInGrams=amountInGrams;
+        this.itemPriceGBP=itemPriceGBP;
+    }
     
 }

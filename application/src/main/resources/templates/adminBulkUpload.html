@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Upload Items</title>
+    <style>
+        body {
+           
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Ensure items are stacked vertically */
+            align-items: center; /* Horizontally center elements */
+            height: 100vh; /* Ensure the body takes up the full viewport height */
+
+        
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            width: 100%;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .navbar a:last-child {
+            margin-right: 0;
+        }
+        .login-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .container {
+            text-align: center;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .upload-btn {
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/adminHome">Home</a>
+    <a href="">Bulk Upload Items</a>
+    <a th:href="@{/reports}">Reports</a>
+    <a href="/signOutAdmin">Sign Out</a>
+    <p>Admin ID: <span th:text="${adminId}"></span></p>
+        
+</div>
+<div th:if="${successMessage == true}"class="navbar" style="background-color: green">
+    <p>Successfully Uploaded Items!</p>
+</div>
+<div th:if="${errorMessage == 'Error parsing CSV file.'}"class="navbar" style="background-color: red">
+    <p>Error Uploaded Items, Unsuccessful!</p>
+</div>
+<div class="container">
+    <h2>Upload CSV File With New Items</h2>
+    <form id="uploadForm" enctype="multipart/form-data" th:action="@{/uploadCsv}" method="post">
+        <label for="csvFile" class="upload-btn">Choose File</label>
+        <input type="file" id="csvFile" name="csvFile" accept=".csv" onchange="displayFileName()">
+        <button type="submit" class="upload-btn">Upload</button>
+    </form>
+    <div class="file-name" id="fileName"></div>
+</div>
+
+<script>
+    function displayFileName() {
+        const fileInput = document.getElementById('csvFile');
+        const fileNameDisplay = document.getElementById('fileName');
+        const fileName = fileInput.files[0].name;
+        fileNameDisplay.textContent = `Selected file: ${fileName}`;
+    }
+</script>
+
+
+</body>
+</html>
