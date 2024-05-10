@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .navbar a:last-child {
+            margin-right: 0;
+        }
+        .search-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .search-container input[type=text] {
+            padding: 10px;
+            width: 50%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .search-container button:hover {
+            background-color: #45a049;
+        }
+        .inline-heading {
+            display: inline-block;
+        }
+        .counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .counter-button {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #ccc;
+            margin: 0 5px;
+        }
+
+        .add-to-basket {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/home">Home</a>
+    <a href="/basket">Basket</a>
+    <a href="/signOut">Sign Out</a>
+    <p>User ID: <span th:text="${userId}"></span></p>
+</div>
+
+<div class="search-container" th:if="${noItem}!=true">
+    <h1 th:text="${item.name}"></h1>
+    <div>
+        <h3 class="inline-heading">Supplier: </h3>
+        <h3 th:text="${item.supplier}" class="inline-heading"></h3>
+    </div>
+    <div>
+        <h3 class="inline-heading">Type: </h3>
+        <h3 th:text="${item.typeName}" class="inline-heading"></h3>
+    </div>
+    <div>
+        <h3 class="inline-heading">Amount In Grams: </h3>
+        <h3 th:text="${item.amountInGrams}" class="inline-heading"></h3>
+    </div>
+    <div>
+        <h3 class="inline-heading">Price: </h3>
+        <h3 th:text="${item.itemPriceGBP}" class="inline-heading"></h3>
+    </div>
+    <form th:action="@{'/addToBasket/' + ${item.id}}" method="post">
+        <div class="counter">
+            <input type="number" class="quantity-input" name="quantity" value="1" min="1"> 
+            <button type="submit" class="add-to-basket">Add to Basket</button>
+        </div>
+    </form>
+</div>
+
+<div>
+    <h5 th:if="${basket}==true" style="color:green">Successfully Added To Basket!</h5>
+</div>
+
+<div class="search-container" th:if="${noItem}==true">
+    <h1>No Item Found</h1>
+</div>
+
+
+
+
+</body>
+</html>

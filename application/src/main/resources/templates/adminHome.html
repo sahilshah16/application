@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+    <style>
+        body {
+           
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Ensure items are stacked vertically */
+            align-items: center; /* Horizontally center elements */
+            height: 100vh; /* Ensure the body takes up the full viewport height */
+
+        
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            width: 100%;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .navbar a:last-child {
+            margin-right: 0;
+        }
+        .login-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        span.error-message {
+            color: red;
+            display: block;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        span.success-message {
+            color: green;
+            display: block;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="">Home</a>
+    <a href="/bulkAdd">Bulk Upload Items</a>
+    <a th:href="@{/reports}">Reports</a>
+    <a href="/signOutAdmin">Sign Out</a>
+    <p>Admin ID: <span th:text="${adminId}"></span></p>
+        
+</div>
+<div th:if="${uploaded == true}"class="navbar" style="background-color: green">
+    <p>Successfully Uploaded Item!</p>
+</div>
+
+<div class="login-container" >
+    <h1>Upload An Item</h1>
+    <form action="#" method="post" th:object="${item}" th:action="@{/addItem}">
+        <label>Name:</label>
+        <input th:field="*{name}" required>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></p>
+        <label>Supplier:</label>
+        <input th:field="*{supplier}" required>
+        <p th:if="${#fields.hasErrors('supplier')}" th:errors="*{supplier}" style="color: red;"></p>
+        <label>Type:</label>
+        <input th:field="*{typeName}" required>
+        <p th:if="${#fields.hasErrors('typeName')}" th:errors="*{typeName}" style="color: red;"></p>
+        <label>Amount In Grams:</label>
+        <input th:field="*{amountInGrams}" required>
+        <p th:if="${#fields.hasErrors('amountInGrams')}" th:errors="*{amountInGrams}" style="color: red;"></p>
+        <label>Price of Item (GBP):</label>
+        <input th:field="*{itemPriceGBP}" required>
+        <p th:if="${#fields.hasErrors('itemPriceGBP')}" th:errors="*{itemPriceGBP}" style="color: red;"></p>
+        
+        <button type="submit">Upload</button>
+    </form>
+</div>
+
+</body>
+</html>

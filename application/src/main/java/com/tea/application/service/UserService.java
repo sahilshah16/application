@@ -1,5 +1,9 @@
 package com.tea.application.service;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,10 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public Optional<User> getUserById(String id){
+        return userRepository.findById(id);
+    }
+
     public User saveUser(User user){
         String hashedPassword = passwordEncoderService.hashPassword(user.getPassword());
         user.setPassword(hashedPassword);
@@ -28,4 +36,9 @@ public class UserService {
     public boolean authenticate(String password, String hashedPassword){
         return passwordEncoderService.checkPassword(password, hashedPassword);
     }
+
+    public List<User> getOrdersWithinDateRange(LocalDate startDate, LocalDate endDate) {
+        return userRepository.findByDateBetween(startDate, endDate);
+    }
+
 }

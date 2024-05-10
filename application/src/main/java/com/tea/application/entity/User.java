@@ -5,15 +5,12 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @Document(collection = "users")
 public class User {
@@ -28,5 +25,16 @@ public class User {
     
     public User() {
         this.date = LocalDateTime.now();
+    }
+    public User(String username, String password){
+        this.date = LocalDateTime.now();
+        this.username=username;
+        this.password=password;
+    }
+    public User(String id, String username, String password){
+        this.date = LocalDateTime.now();
+        this.id=id;
+        this.username=username;
+        this.password=password;
     }
 }

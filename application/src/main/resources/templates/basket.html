@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        .navbar a:last-child {
+            margin-right: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .info {
+            flex: 1;
+            position: relative; /* Takes up remaining space */
+        }
+
+        .price {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+        .search-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .search-container input[type=text] {
+            padding: 10px;
+            width: 50%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .search-container button:hover {
+            background-color: #45a049;
+        }
+        
+    </style>
+</head>
+<body style="padding-bottom: 100px;">
+
+<div class="navbar">
+    <a href="/home">Home</a>
+    <a href="">Basket</a>
+    <a href="/signOut">Sign Out</a>
+    <p>User ID: <span th:text="${userId}"></span></p>
+</div>
+
+<div class="search-results" th:if="${emptyBasket != true}">
+    <h2 style="text-align: center;">Basket Items</h2>
+        <ul th:each="b,iterStat : ${basketData}">
+            
+            <div class="container">
+                <div class="info">
+                
+                    <h3 th:text="${b.item.name}"></h3>
+                    <div>
+                        <span class="inline-heading">Supplier: </span>
+                        <span th:text="${b.item.supplier}"></span>
+                    </div>
+                    <div>
+                        <span class="inline-heading">Type: </span>
+                        <span th:text="${b.item.typeName}" class="inline-heading"></span>
+                    </div>
+                    <div>
+                        <span class="inline-heading">Amount In Grams: </span>
+                        <span th:text="${b.item.amountInGrams}" class="inline-heading"></span>
+                    </div>
+                    <div>
+                        <span class="inline-heading">Price per item: </span>
+                        <span th:text="${b.item.itemPriceGBP}" class="inline-heading"></pspan>
+                    </div>
+                    <div>
+                        <span class="inline-heading">Quantity: </span>
+                        <span th:text="${b.quantity}" class="inline-heading"></span>
+                    </div>
+                    <div class="price">
+                        <span style="font-weight:bold;">Price: </span>
+                        <span style="font-weight:bold;" th:text="${prices[iterStat.index]}"></span>
+                    </div>
+                </div>
+
+            </div>
+        
+        </ul>
+
+<div style="text-align: center;">
+    <h3 style="text-align: center; display: inline;">Total Item Price Amount: </h3>
+    <h3 th:text="${total}" style="text-align: center; display: inline;"></h3>
+</div>
+<div style="text-align: center;">
+    <h3 style="text-align: center; display: inline;">Total Shipping Price Amount: </h3>
+    <h3 th:if="${shipping == 0.0}" style="text-align: center; display: inline;">Free Shipping</h3>
+    <h3 th:if="${shipping == 1.5}" style="text-align: center; display: inline;">1.50</h3>
+    <h3 th:if="${shipping == 10.0}" style="text-align: center; display: inline;">10.00</h3>
+    <h3 th:if="${shipping == 15.0}" style="text-align: center; display: inline;">15.00</h3>
+</div>
+<div style="text-align: center;">
+    <h3 style="text-align: center; display: inline;">Total Amount: </h3>
+    <h3 th:text="${totalAmount}" style="text-align: center; display: inline;"></h3>
+</div>
+<div class="search-container">
+    <form th:action="@{'/handleOrder/' + ${userId}+'/'+${shipping}+'/'+${total}}" method="post">
+        <button type="submit">Order And Make Payment</button>
+    </form>
+</div>
+</div>
+<div th:if="${emptyBasket == true}">
+    <h3 style="text-align: center;">Basket Is Empty</h3>
+</div>
+
+</body>
+</html>
