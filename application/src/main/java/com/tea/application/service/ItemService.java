@@ -25,7 +25,6 @@ public class ItemService {
     }
 
     public HashSet<Item> searchItemsResult(String searchTerm){
-        System.out.println("Here");
         return itemRepository.searchItemsByKeyword(searchTerm);
     }
 

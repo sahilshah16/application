@@ -52,8 +52,6 @@ public class SearchController {
 
         model.addAttribute("afterSearch", true);
 
-        System.out.println(model.getAttribute("afterSearch"));
-
         return "home";
     }
 
